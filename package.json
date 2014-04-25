@@ -1,0 +1,26 @@
+{
+  "name": "unpm-dependents",
+  "version": "0.0.0",
+  "description": "get dependents of packages in unpm",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jarofghosts/unpm-dependents.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jarofghosts/unpm-dependents/issues"
+  },
+  "keywords": [
+    "unpm",
+    "package",
+    "dependents"
+  ],
+  "author": "jesse keane <me@jessekeane.me>",
+  "license": "MIT",
+  "dependencies": {
+    "concat-stream": "1.4.5"
+  }
+}
