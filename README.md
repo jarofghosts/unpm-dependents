@@ -9,9 +9,8 @@ add `unpm-dependents` to your unpm middleware.
 
 ## notes
 
-adds `/-/view/dependedUpon/` endpoint. in order to maintain parity with npm,
-you must provide *at least* `startkey` as a parameter, which should look like:
-`["modulename"]`.
+adds a resource that responds to GET requests at `/-/view/dependedUpon/`. in order to maintain parity with npm, GET
+requests to this resource must inclue *at least* `startkey` as a query parameter. `startkey` specifies the module for which you want dependencies, and its value must be a JSON array with the module name as its only element. It should look like: `["modulename"]`.
 
 ## license
 
