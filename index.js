@@ -58,7 +58,7 @@ function setup(unpm) {
     }
   }
 
-  function serve_dependents(context, route, respond) {
+  function serve_dependents(respond, route) {
     var start = route.query.startkey
       , module
 
