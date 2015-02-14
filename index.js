@@ -65,12 +65,12 @@ function setup(unpm) {
     // to mirror official npm query of `["modulename"]`
     module = start.slice(2, -2)
 
-    if(!module) return respond.not_found()
+    if(!module) return respond.notFound()
 
     unpm.backend.get('unpm-dependents', serve_deps)
 
     function serve_deps(err, data) {
-      if(err || !data || !data[module]) return respond.not_found()
+      if(err || !data || !data[module]) return respond.notFound()
 
       respond(null, 200, {rows: data[module].map(to_output)})
     }
