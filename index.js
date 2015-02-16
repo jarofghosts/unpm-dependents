@@ -1,56 +1,56 @@
 var concat = require('concat-stream')
 
-var get_dependencies = require('./lib/get-dependencies')
-  , get_description = require('./lib/get-description')
+var getDependencies = require('./lib/get-dependencies')
+  , getDescription = require('./lib/get-description')
 
 module.exports = setup
 
 function setup(unpm) {
   var dependents = {}
 
-  unpm.backend.createMetaStream().pipe(concat(build_initial))
-  unpm.router.add('get', '/-/_view/dependedUpon', serve_dependents)
+  unpm.backend.createMetaStream().pipe(concat(buildInitial))
+  unpm.router.add('get', '/-/_view/dependedUpon', serveDependents)
 
-  function build_initial(data) {
+  function buildInitial(data) {
     var deps = {}
 
-    var module_deps
+    var moduleDeps
       , current
       , module
       , dep
 
     for(var i = 0, l = data.length; i < l; ++i) {
       module = data[i]
-      module_deps = get_dependencies(module)
+      moduleDeps = getDependencies(module)
 
-      for(var j = 0, k = module_deps.length; j < k; ++j) {
-        dep = module_deps[j]
+      for(var j = 0, k = moduleDeps.length; j < k; ++j) {
+        dep = moduleDeps[j]
         deps[dep] = deps[dep] || []
         deps[dep].push({
             name: module.key
-          , description: get_description(module)
+          , description: getDescription(module)
         })
       }
     }
 
     unpm.backend.set('unpm-dependents', deps)
-    unpm.backend.on('setMeta', update_deps)
+    unpm.backend.on('setMeta', updateDeps)
 
-    function update_deps(name, data, old_data) {
-      var old_deps = get_dependencies(old_data)
-        , new_deps = get_dependencies(data)
+    function updateDeps(name, data, oldData) {
+      var oldDeps = getDependencies(oldData)
+        , newDeps = getDependencies(data)
 
-      for(var i = 0, l = old_deps.length; i < l; ++i) {
-        if(new_deps.indexOf(old_deps[i]) === -1) {
-          if(!deps[old_deps[i]]) continue
-          deps[old_deps[i]].splice(deps[old_deps[i]].indexOf(name), 1)
+      for(var i = 0, l = oldDeps.length; i < l; ++i) {
+        if(newDeps.indexOf(oldDeps[i]) === -1) {
+          if(!deps[oldDeps[i]]) continue
+          deps[oldDeps[i]].splice(deps[oldDeps[i]].indexOf(name), 1)
         }
       }
 
-      for(var i = 0, l = new_deps.length; i < l; ++i) {
-        deps[new_deps[i]] = deps[new_deps[i]] || []
-        if(deps[new_deps[i]].indexOf(name) === -1) {
-          deps[new_deps[i]].push(name)
+      for(var i = 0, l = newDeps.length; i < l; ++i) {
+        deps[newDeps[i]] = deps[newDeps[i]] || []
+        if(deps[newDeps[i]].indexOf(name) === -1) {
+          deps[newDeps[i]].push(name)
         }
       }
 
@@ -58,7 +58,7 @@ function setup(unpm) {
     }
   }
 
-  function serve_dependents(respond, route) {
+  function serveDependents(respond, route) {
     var start = route.query.startkey
       , module
 
@@ -67,15 +67,15 @@ function setup(unpm) {
 
     if(!module) return respond.notFound()
 
-    unpm.backend.get('unpm-dependents', serve_deps)
+    unpm.backend.get('unpm-dependents', serveDeps)
 
-    function serve_deps(err, data) {
+    function serveDeps(err, data) {
       if(err || !data || !data[module]) return respond.notFound()
 
-      respond(null, 200, {rows: data[module].map(to_output)})
+      respond(null, 200, {rows: data[module].map(toOutput)})
     }
 
-    function to_output(el) {
+    function toOutput(el) {
       return {key: [module, el.name, el.description], value: 1}
     }
   }

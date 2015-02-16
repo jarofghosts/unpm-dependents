@@ -1,5 +1,5 @@
 &mu;npm-dependents
-====
+==================
 
 provides dependedUpon for [&mu;npm](http://npm.im/unpm)
 
@@ -16,7 +16,7 @@ dependents(unpm_instance)
 ## notes
 
 adds a resource that responds to GET requests at `/-/_view/dependedUpon/`. in
-order to maintain parity with npm, GET requests to this resource must inclue
+order to maintain parity with npm, GET requests to this resource must include
 *at least* `startkey` as a query parameter. `startkey` specifies the module for
 which you want dependencies, and its value must be a JSON array with the module
 name as its only element. it should look like: `["modulename"]`.
