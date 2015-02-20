@@ -1,6 +1,6 @@
 {
   "name": "unpm-dependents",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "get dependents of packages in unpm",
   "main": "index.js",
   "scripts": {
